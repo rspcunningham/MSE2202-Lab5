@@ -1,0 +1,9 @@
+# MSE2202-Lab5
+
+I didnt really use anything from motion.h so I ended up just deleting it. All the motor controls (all of which I wrote from scratch) are all in motors.h
+
+To actually drive the device I use a negative feedback loop to maintain the two wheels at the same speed. When one wheel is faster than the other, it is slowed down and the other wheel sped up. The amount by which I change wheel power is proportional to the speed difference. Gain is 16x. While the left wheel defaults to max power (about 80% of actual max, to leave room for the feedback to modulate it), the right wheel defaults to 85% since it was considerably weaker. To ensure everything runs at a consistent timing I only run through the main program loop once every 1 ms. 
+
+Speed is measured simply by taking the ecoder count change per program loop (ie. speed in ticks/ms), and then averaging over the past 10 iterations to reduce noise without introducing too much lag. 
+
+The main difficuly I had was the inaccuracies/inconsistencies with the motors and encoders. I would specify the wheels to turn a certain amount - 15 encoder ticks, for example, in opposite directions (to turn the device). When I tested this, it resulted in anything from a 40º turn to 140º. This means that there was basically no use in fine tuning any of the commands - changing that 15 ticks to 20 will have an insignificant effect compared to the effects of random chance. This basically just meant alot of doing it over and over and over and over again until it magically lines up just right. In the end I got tasks 1 and 2 to work perfectly, but task 3 is much harder because there are alot more places for error to compound. In the end I had it successfully hit the beacon, but it was about a half inch too far to the right to properly see the IR signal, so it just got stuck against the beacon and stalled. 
